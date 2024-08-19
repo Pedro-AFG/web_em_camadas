@@ -28,7 +28,7 @@ public class ClienteValidadorCNPJ {
 			saida = new PrintWriter(canalSaida, true);
 
 			Scanner leitor = new Scanner(System.in);
-			System.out.println("Envie uma mensagem:");
+			System.out.println("Informe um CNPJ:");
 			String leitura = leitor.nextLine();
 			saida.println(leitura);
 
