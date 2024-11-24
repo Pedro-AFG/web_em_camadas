@@ -16,9 +16,9 @@ import java.sql.Statement;
 @Configuration
 public class DatabaseConnection {
 
-    private static final String URL = "jdbc:postgresql://localhost:5432/railway";
+    private static final String URL = "jdbc:postgresql://junction.proxy.rlwy.net:35998/railway";
     private static final String USER = "postgres";
-    private static final String PASSWORD = "postgres";
+    private static final String PASSWORD = "jmSHpuvjwYPOxdJybaSSDpnufwKFEdal";
 
     private Connection connection;
 
