@@ -29,24 +29,24 @@ public class CursoController {
         if (curso == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
-        return ResponseEntity.status(HttpStatus.OK).body(curso);
+        return ResponseEntity.ok(curso);
     }
 
     @PostMapping(consumes = {"application/json", "application/xml"})
-    public ResponseEntity<String> postCurso(@RequestBody Curso curso) {
-        cursoService.postCurso(curso);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Curso criado com sucesso");
+    public ResponseEntity<Curso> postCurso(@RequestBody Curso curso) {
+        Curso cursoCriado = cursoService.postCurso(curso);
+        return ResponseEntity.status(HttpStatus.CREATED).body(cursoCriado);
     }
 
     @PutMapping(consumes = {"application/json", "application/xml"})
-    public ResponseEntity<String> putCurso(@RequestBody Curso curso) {
-        cursoService.putCurso(curso);
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body("Curso atualizado com sucesso");
+    public ResponseEntity<Curso> putCurso(@RequestBody Curso curso) {
+        Curso cursoAtualizado = cursoService.putCurso(curso);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(cursoAtualizado);
     }
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<String> deleteCurso(@PathVariable("id") long id) {
         cursoService.deleteCurso(id);
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body("Curso deletado com sucesso");
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Curso com ID " + id + " foi deletado");
     }
 }

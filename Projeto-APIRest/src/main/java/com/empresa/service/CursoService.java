@@ -25,41 +25,41 @@ public class CursoService {
         return cursoDAO.getById(id);
     }
 
-    public void postCurso(Curso curso) {
-        cursoDAO.insert(curso);
+    public Curso postCurso(Curso curso) {
+        // Ajusta relações entre curso e alunos antes de salvar
+        for (Aluno aluno : curso.getAlunos()) {
+            aluno.setCurso(curso);
+        }
+        return cursoDAO.insert(curso);
     }
 
-    public void putCurso(Curso cursoAtualizado) {
+    public Curso putCurso(Curso cursoAtualizado) {
         Curso cursoExistente = cursoDAO.getById(cursoAtualizado.getId());
-        if (cursoExistente != null) {
-            cursoExistente.setNome(cursoAtualizado.getNome());
-
-            for (Aluno aluno : cursoExistente.getAlunos()) {
-                aluno.setCurso(null);
-            }
-
-            List<Aluno> alunosAtualizados = cursoAtualizado.getAlunos();
-            for (Aluno aluno : alunosAtualizados) {
-                aluno.setCurso(cursoExistente);
-            }
-
-            cursoExistente.setAlunos(alunosAtualizados);
-            cursoDAO.update(cursoExistente);
-        } else {
-            throw new IllegalArgumentException("Curso não encontrado");
+        if (cursoExistente == null) {
+            throw new IllegalArgumentException("Curso com ID " + cursoAtualizado.getId() + " não encontrado");
         }
+
+        cursoExistente.setNome(cursoAtualizado.getNome());
+
+        // Atualiza relação com alunos
+        for (Aluno aluno : cursoAtualizado.getAlunos()) {
+            aluno.setCurso(cursoExistente);
+        }
+        cursoExistente.setAlunos(cursoAtualizado.getAlunos());
+
+        return cursoDAO.update(cursoExistente);
     }
 
     public void deleteCurso(long idCurso) {
         Curso cursoToRemove = cursoDAO.getById(idCurso);
         if (cursoToRemove != null) {
+            // Remove associação dos alunos com o curso
             for (Aluno aluno : cursoToRemove.getAlunos()) {
                 aluno.setCurso(null);
             }
-
             cursoDAO.delete(idCurso);
         } else {
-            throw new IllegalArgumentException("Curso não encontrado");
+            throw new IllegalArgumentException("Curso com ID " + idCurso + " não encontrado");
         }
     }
 }

@@ -27,52 +27,39 @@ public class AlunoService {
         return alunoDAO.getById(matricula);
     }
 
-    public void postAluno(Aluno aluno) {
-        Curso cursoCompleto = cursoService.getCurso(aluno.getCurso().getId());
-
-        if (cursoCompleto != null) {
-            aluno.setCurso(cursoCompleto);
-            alunoDAO.insert(aluno);
-        } else {
+    public Aluno postAluno(Aluno aluno) {
+        Curso curso = cursoService.getCurso(aluno.getCurso().getId());
+        if (curso == null) {
             throw new IllegalArgumentException("Curso com ID " + aluno.getCurso().getId() + " não encontrado");
         }
+        aluno.setCurso(curso);
+        return alunoDAO.insert(aluno);
     }
 
-    public void putAluno(Aluno alunoAtualizado) {
+    public Aluno putAluno(Aluno alunoAtualizado) {
         Aluno alunoExistente = alunoDAO.getById(alunoAtualizado.getMatricula());
-
-        if (alunoExistente != null) {
-            alunoExistente.setNome(alunoAtualizado.getNome());
-            alunoExistente.setEmail(alunoAtualizado.getEmail());
-
-            Curso cursoAtual = alunoExistente.getCurso();
-            Curso novoCurso = cursoService.getCurso(alunoAtualizado.getCurso().getId());
-
-            if (novoCurso != null) {
-                if (cursoAtual != null) {
-                    cursoAtual.getAlunos().remove(alunoExistente);
-                }
-
-                alunoExistente.setCurso(novoCurso);
-                novoCurso.getAlunos().add(alunoExistente);
-                alunoDAO.update(alunoExistente);
-            } else {
-                throw new IllegalArgumentException("Curso não encontrado");
-            }
-        } else {
-            throw new IllegalArgumentException("Aluno não encontrado");
+        if (alunoExistente == null) {
+            throw new IllegalArgumentException("Aluno com matrícula " + alunoAtualizado.getMatricula() + " não encontrado");
         }
+
+        alunoExistente.setNome(alunoAtualizado.getNome());
+        alunoExistente.setEmail(alunoAtualizado.getEmail());
+
+        Curso novoCurso = cursoService.getCurso(alunoAtualizado.getCurso().getId());
+        if (novoCurso == null) {
+            throw new IllegalArgumentException("Curso com ID " + alunoAtualizado.getCurso().getId() + " não encontrado");
+        }
+
+        alunoExistente.setCurso(novoCurso);
+        return alunoDAO.update(alunoExistente);
     }
 
     public void deleteAluno(long matricula) {
-        Aluno alunoToRemove = alunoDAO.getById(matricula);
-        if (alunoToRemove != null) {
+        Aluno aluno = alunoDAO.getById(matricula);
+        if (aluno != null) {
             alunoDAO.delete(matricula);
-
-            Curso curso = alunoToRemove.getCurso();
-            if (curso != null) {
-                curso.getAlunos().remove(alunoToRemove);
-            }
+        } else {
+            throw new IllegalArgumentException("Aluno com matrícula " + matricula + " não encontrado");
         }
     }
 }

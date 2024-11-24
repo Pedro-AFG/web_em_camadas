@@ -29,24 +29,24 @@ public class AlunoController {
         if (aluno == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
-        return ResponseEntity.status(HttpStatus.OK).body(aluno);
+        return ResponseEntity.ok(aluno);
     }
 
     @PostMapping(consumes = {"application/json", "application/xml"})
-    public ResponseEntity<String> postAluno(@RequestBody Aluno aluno) {
-        alunoService.postAluno(aluno);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Aluno criado com sucesso");
+    public ResponseEntity<Aluno> postAluno(@RequestBody Aluno aluno) {
+        Aluno alunoCriado = alunoService.postAluno(aluno);
+        return ResponseEntity.status(HttpStatus.CREATED).body(alunoCriado);
     }
 
     @PutMapping(consumes = {"application/json", "application/xml"})
-    public ResponseEntity<String> putAluno(@RequestBody Aluno aluno) {
-        alunoService.putAluno(aluno);
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body("Aluno atualizado com sucesso");
+    public ResponseEntity<Aluno> putAluno(@RequestBody Aluno aluno) {
+        Aluno alunoAtualizado = alunoService.putAluno(aluno);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(alunoAtualizado);
     }
 
     @DeleteMapping(value = "/{matricula}")
     public ResponseEntity<String> deleteAluno(@PathVariable("matricula") long matricula) {
         alunoService.deleteAluno(matricula);
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body("Aluno deletado com sucesso");
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Aluno com matrícula " + matricula + " foi deletado");
     }
 }

@@ -26,7 +26,7 @@ public class AlunoDao implements DAO<Aluno> {
     }
 
     @Override
-    public void insert(Aluno aluno) {
+    public Aluno insert(Aluno aluno) {
         try (PreparedStatement stmt = connection.prepareStatement(INSERT)) {
             stmt.setLong(1, aluno.getMatricula());
             stmt.setString(2, aluno.getNome());
@@ -36,10 +36,11 @@ public class AlunoDao implements DAO<Aluno> {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return aluno;
     }
 
     @Override
-    public void update(Aluno aluno) {
+    public Aluno update(Aluno aluno) {
         try (PreparedStatement stmt = connection.prepareStatement(UPDATE)) {
             stmt.setString(1, aluno.getNome());
             stmt.setString(2, aluno.getEmail());
@@ -49,13 +50,17 @@ public class AlunoDao implements DAO<Aluno> {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return aluno;
     }
 
     @Override
     public void delete(long matricula) {
         try (PreparedStatement stmt = connection.prepareStatement(DELETE)) {
             stmt.setLong(1, matricula);
-            stmt.executeUpdate();
+            int rowsAffected = stmt.executeUpdate();
+            if (rowsAffected == 0) {
+                throw new IllegalArgumentException("Aluno não encontrado para remoção.");
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
