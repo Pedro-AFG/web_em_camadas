@@ -16,9 +16,9 @@ import java.sql.Statement;
 @Configuration
 public class DatabaseConnection {
 
-    private static final String URL = System.getenv("DATABASE_URL");
-    private static final String USER = System.getenv("PGUSER");
-    private static final String PASSWORD = System.getenv("PGPASSWORD");
+    private static final String URL = System.getenv("DB_URL");
+    private static final String USER = System.getenv("DB_USER");
+    private static final String PASSWORD = System.getenv("DB_PASSWORD");
 
     private Connection connection;
 
