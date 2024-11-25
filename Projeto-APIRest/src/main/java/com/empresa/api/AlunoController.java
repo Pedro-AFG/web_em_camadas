@@ -32,13 +32,13 @@ public class AlunoController {
     }
 
     @PostMapping(consumes = {"application/json", "application/xml"})
-    public ResponseEntity<Aluno> postAluno(@Valid @RequestBody Aluno aluno) {
+    public ResponseEntity<Aluno> postAluno(@RequestBody Aluno aluno) {
         Aluno alunoCriado = alunoService.postAluno(aluno);
         return ResponseEntity.status(HttpStatus.CREATED).body(alunoCriado);
     }
 
     @PutMapping(consumes = {"application/json", "application/xml"})
-    public ResponseEntity<Aluno> putAluno(@Valid @RequestBody Aluno aluno) {
+    public ResponseEntity<Aluno> putAluno(@RequestBody Aluno aluno) {
         Aluno alunoAtualizado = alunoService.putAluno(aluno);
         return ResponseEntity.ok(alunoAtualizado);
     }
