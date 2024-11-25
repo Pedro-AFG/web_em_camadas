@@ -28,7 +28,7 @@ public class AlunoController {
     @GetMapping(value = "/{matricula}", produces = {"application/json", "application/xml"})
     public ResponseEntity<Aluno> getAluno(@PathVariable("matricula") long matricula) {
         Aluno aluno = alunoService.getAluno(matricula);
-        return ResponseEntity.ok(aluno); // Exceções serão tratadas globalmente
+        return ResponseEntity.ok(aluno);
     }
 
     @PostMapping(consumes = {"application/json", "application/xml"})

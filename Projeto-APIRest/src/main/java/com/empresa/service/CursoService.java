@@ -3,11 +3,13 @@ package com.empresa.service;
 import com.empresa.dao.CursoRepository;
 import com.empresa.model.Aluno;
 import com.empresa.model.Curso;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@Transactional
 public class CursoService {
 
     private final CursoRepository cursoRepository;
